@@ -8,46 +8,88 @@
   @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;700&display=swap');
 
   body {
-    font-family: 'SF Pro Display', Arial, sans-serif; /* خط iPhone */
-    background-color: #ffffff;
-    text-align: center;
-    padding: 20px;
-    transition: background 1s ease;
+    font-family: 'SF Pro Display', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    overflow: hidden;
+    color: white;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
   }
 
-  h1 {
-    color: #d32f2f;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
   }
 
-  .flag {
-    width: 220px;
-    margin: 20px auto;
-    display: block;
-    border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
-    transition: transform 0.5s ease;
+  #content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 20px;
+  }
+
+  #followBtn {
+    background: linear-gradient(45deg,#ff9800,#ffc107);
+    color: black;
+    font-weight: bold;
+    padding: 12px 25px;
+    border-radius: 12px;
+    display: inline-block;
+    margin-bottom: 20px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+  }
+
+  #followBtn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #ffc107;
   }
 
   #counter {
     font-size: 36px;
-    margin-bottom: 20px;
     font-weight: bold;
-    color: #d32f2f;
-    text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
-    height: 50px;
-    overflow: hidden;
-    position: relative;
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
   }
 
   .counter-number {
-    position: absolute;
-    width: 100%;
-    transition: transform 0.5s cubic-bezier(0.5, 1.5, 0.5, 1);
+    font-size: 36px;
+    font-weight: bold;
+    background: linear-gradient(45deg,#ff0000,#00ff00,#0000ff);
+    -webkit-background-clip: text;
+    color: transparent;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+    transition: transform 0.5s cubic-bezier(0.5,1.5,0.5,1), text-shadow 0.5s ease;
+  }
+
+  #thankMessage {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 20px auto;
+    color: #ff5722;
+    display: none;
+  }
+
+  #poem {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 40px;
+    line-height: 1.6;
+    background: linear-gradient(45deg,#ff0000,#00ff00,#0000ff);
+    -webkit-background-clip: text;
+    color: transparent;
+    text-shadow: 3px 3px 12px rgba(0,0,0,0.5);
+    perspective: 1000px;
+    padding: 20px 0;
   }
 
   .btn {
@@ -61,133 +103,137 @@
     width: 80%;
     max-width: 400px;
     background: linear-gradient(45deg, #4caf50, #81c784);
-    transition: transform 0.5s ease, background 1s ease;
-    transform: translateZ(-200px); /* يبدأ من الخلف */
+    transition: transform 0.5s ease, background 1s ease, box-shadow 0.5s ease;
+    transform: translateZ(-200px);
   }
 
   .btn:hover {
     transform: scale(1.05) translateZ(0);
     background: linear-gradient(45deg, #388e3c, #66bb6a);
+    box-shadow: 0 0 20px #66bb6a;
   }
 
-  #thankMessage {
-    display: none;
-    font-size: 24px;
-    color: #d32f2f;
-    margin: 20px auto;
-    font-weight: bold;
-  }
-
-  /* الشعر في الأسفل */
-  #poem {
-    font-size: 22px;
-    font-weight: bold;
-    margin-top: auto;
-    line-height: 1.6;
-    background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff);
-    -webkit-background-clip: text;
-    color: transparent;
-    text-shadow: 3px 3px 12px rgba(0,0,0,0.5);
-    perspective: 1000px;
-    padding: 20px 0;
-  }
 </style>
 </head>
 <body>
 
-<h1>تبرع لدعم فلسطين</h1>
+<canvas id="stars"></canvas>
 
-<img src="images.jpeg" alt="علم فلسطين" class="flag">
+<div id="content">
+  <a id="followBtn">تابع الموقع: محمد أحمد نجم - 1,008,795 فانز</a>
 
-<!-- عداد المتبرعين -->
-<div id="counter">
-  <div class="counter-number">5680</div>
-</div>
+  <div id="counter">
+    <span class="counter-number">5680</span> متبرع
+  </div>
 
-<p>اختر طريقة التبرع:</p>
+  <a class="btn" href="sms:9770?body=فلسطين">تبرع عبر رسالة قصيرة (SMS)</a>
+  <a class="btn" href="tel:*9*166#">تبرع عبر فودافون كاش – الهلال الأحمر المصري</a>
+  <a class="btn" href="tel:99981">التبرع عبر فوري</a>
+  <a class="btn" href="tel:838450130">الهلال الأحمر المصري – بنك القاهرة</a>
+  <a class="btn" href="tel:100035211157">CIB: الحساب للتبرع</a>
+  <a class="btn" href="tel:70237939100010">Arab African International Bank</a>
+  <a class="btn" href="tel:2820302932110010">SAIB فرع المعادي</a>
 
-<a class="btn" href="sms:9770?body=فلسطين">تبرع عبر رسالة قصيرة (SMS)</a>
-<a class="btn" href="tel:*9*166#">تبرع عبر فودافون كاش – الهلال الأحمر المصري</a>
-<a class="btn" href="tel:99981">التبرع عبر فوري</a>
-<a class="btn" href="tel:838450130">الهلال الأحمر المصري – بنك القاهرة</a>
-<a class="btn" href="tel:100035211157">CIB: الحساب للتبرع</a>
-<a class="btn" href="tel:70237939100010">Arab African International Bank</a>
-<a class="btn" href="tel:2820302932110010">SAIB فرع المعادي</a>
+  <div id="thankMessage">شكراً لدعمك لأخواتك في فلسطين… شكراً يا مصر ❤️</div>
 
-<div id="thankMessage">شكراً لدعمك لأخواتك في فلسطين… شكراً يا مصر ❤️</div>
-
-<!-- الشعر الجديد -->
-<div id="poem">
-فلسطين تنادي بالحرية والندى<br>
-مصر سندها وعز العرب والصفاء<br>
-قلوبنا واحدة، يدنا تمتد بالأمل<br>
-نحمي الأرض ونزرع السلام والضياء
+  <div id="poem">
+    فلسطين حرّة، ومصر سندها، <br>
+    قلوبنا متحدة، والأمل لا يموت، <br>
+    يدنا تمتد بالحب والسلام، <br>
+    نزرع النور ونحمي الأرض بالوفاء
+  </div>
 </div>
 
 <script>
-  // عداد المتبرعين بأسلوب ورقي/رقم سباق
+  // عداد المتبرعين بأسلوب السباقات الورقية
   let counter = localStorage.getItem('donorCounter');
   if(!counter) counter = 5680;
-  const counterDiv = document.getElementById('counter');
+  const counterDiv = document.querySelector('.counter-number');
 
-  function animateNumber(newValue) {
-    const oldNum = parseInt(counterDiv.querySelector('.counter-number').textContent);
+  function animateNumber(newValue){
+    const oldNum = parseInt(counterDiv.textContent);
     const diff = newValue - oldNum;
-    let i = 0;
-    function step() {
+    let i=0;
+    function step(){
       if(i <= diff){
-        counterDiv.querySelector('.counter-number').textContent = oldNum + i;
-        counterDiv.querySelector('.counter-number').style.transform = 'translateY(-50px)';
-        setTimeout(()=> {
-          counterDiv.querySelector('.counter-number').style.transform = 'translateY(0)';
-        }, 50);
+        counterDiv.textContent = oldNum + i;
+        counterDiv.style.transform = 'translateY(-50px)';
+        setTimeout(()=>{ counterDiv.style.transform='translateY(0)'; },50);
         i++;
-        setTimeout(step, 50);
+        setTimeout(step,50);
       }
     }
     step();
   }
 
-  function updateCounter() {
+  function updateCounter(){
     counter++;
     localStorage.setItem('donorCounter', counter);
     animateNumber(counter);
-
-    setTimeout(updateCounter, Math.floor(Math.random() * 5000) + 3000);
+    setTimeout(updateCounter, Math.floor(Math.random()*5000)+3000);
   }
   updateCounter();
 
-  // حركة العلم
-  const flag = document.querySelector('.flag');
+  // عدد الفانز الديناميكي
+  const followBtn = document.getElementById('followBtn');
+  let fans = 1008795;
   setInterval(() => {
-    flag.style.transform = `rotate(${Math.random()*4 - 2}deg)`;
-  }, 2000);
+    fans += 5;
+    followBtn.textContent = `تابع الموقع: محمد أحمد نجم - ${fans.toLocaleString()} فانز`;
+  }, 10000);
 
-  // تغيير خلفية قوية
-  setInterval(() => {
-    const r = Math.floor(Math.random()*50 + 200);
-    const g = Math.floor(Math.random()*50 + 200);
-    const b = Math.floor(Math.random()*50 + 200);
-    body.style.backgroundColor = `rgb(${r},${g},${b})`;
-  }, 4000);
-
-  // صوت شكر جوجل
-  window.addEventListener('load', function() {
+  // رسالة صوتية
+  window.addEventListener('load',()=>{
     if(!localStorage.getItem('thankSpoken')){
       const thank = document.getElementById('thankMessage');
-      thank.style.display = 'block';
-
+      thank.style.display='block';
       const msg = new SpeechSynthesisUtterance();
       msg.text = "شكراً لدعمك لأخواتك في فلسطين… شكراً يا مصر";
       msg.lang = 'ar-SA';
       msg.rate = 1;
       msg.pitch = 1;
       window.speechSynthesis.speak(msg);
-
-      localStorage.setItem('thankSpoken', 'true');
-
-      setTimeout(()=> { thank.style.display = 'none'; }, 5000);
+      localStorage.setItem('thankSpoken','true');
+      setTimeout(()=>{thank.style.display='none';},5000);
     }
+  });
+
+  // خلفية النجوم
+  const canvas = document.getElementById('stars');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const stars = [];
+  const numStars = 200;
+  for(let i=0;i<numStars;i++){
+    stars.push({
+      x: Math.random()*canvas.width,
+      y: Math.random()*canvas.height,
+      radius: Math.random()*1.5+0.5,
+      vx: Math.random()*0.05-0.025,
+      vy: Math.random()*0.05-0.025
+    });
+  }
+  function drawStars(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    for(let s of stars){
+      ctx.beginPath();
+      ctx.arc(s.x,s.y,s.radius,0,Math.PI*2);
+      ctx.fillStyle='white';
+      ctx.fill();
+      s.x += s.vx;
+      s.y += s.vy;
+      if(s.x<0)s.x=canvas.width;
+      if(s.x>canvas.width)s.x=0;
+      if(s.y<0)s.y=canvas.height;
+      if(s.y>canvas.height)s.y=0;
+    }
+    requestAnimationFrame(drawStars);
+  }
+  drawStars();
+  window.addEventListener('resize',()=>{
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
   });
 </script>
 

@@ -7,13 +7,14 @@
 <style>
   body {
     font-family: Arial, sans-serif;
-    background-color: #ffffff; /* صفحة بيضاء */
+    background-color: #ffffff;
     text-align: center;
     padding: 20px;
     transition: background 1s ease;
   }
   h1 {
     color: #d32f2f;
+    margin-bottom: 10px;
   }
   .flag {
     width: 220px;
@@ -22,6 +23,13 @@
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     transition: transform 0.5s ease;
+  }
+  #counter {
+    font-size: 26px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #333;
+    transition: all 0.5s ease, color 1s ease;
   }
   .btn {
     display: block;
@@ -40,12 +48,19 @@
     transform: scale(1.05);
     background: linear-gradient(45deg, #388e3c, #66bb6a);
   }
-  #counter {
-    font-size: 26px;
-    margin-bottom: 20px;
+  #poem {
+    font-size: 18px;
+    margin: 20px auto;
+    color: #555;
+    max-width: 700px;
+    line-height: 1.8;
+  }
+  #thankMessage {
+    display: none;
+    font-size: 22px;
+    color: #d32f2f;
+    margin: 20px auto;
     font-weight: bold;
-    color: #333;
-    transition: all 0.5s ease, color 1s ease;
   }
 </style>
 </head>
@@ -55,28 +70,29 @@
 
 <img src="images.jpeg" alt="علم فلسطين" class="flag">
 
-<!-- عداد المتبرعين -->
 <div id="counter">عدد المتبرعين: 5680 شخص</div>
+
+<div id="poem">
+فلسطين يا أرض النخيل والورد والهوى <br>
+مصر يا قلب العرب والكرامة والندى <br>
+يد واحدة تمتد للحب والسلام <br>
+والأمل فينا ما يموت مهما طال الظلام
+</div>
 
 <p>اختر طريقة التبرع:</p>
 
-<!-- زر رسالة قصيرة SMS -->
 <a class="btn" href="sms:9770?body=فلسطين">تبرع عبر رسالة قصيرة (SMS)</a>
-
-<!-- زر فودافون كاش -->
 <a class="btn" href="tel:*9*166#">تبرع عبر فودافون كاش – الهلال الأحمر المصري</a>
-
-<!-- زر فوري -->
 <a class="btn" href="tel:99981">التبرع عبر فوري</a>
-
-<!-- زر الحسابات البنكية -->
 <a class="btn" href="tel:838450130">الهلال الأحمر المصري – بنك القاهرة</a>
 <a class="btn" href="tel:100035211157">CIB: الحساب للتبرع</a>
 <a class="btn" href="tel:70237939100010">Arab African International Bank</a>
 <a class="btn" href="tel:2820302932110010">SAIB فرع المعادي</a>
 
+<div id="thankMessage">شكراً لدعمك لأخواتك في فلسطين… شكراً يا مصر ❤️</div>
+
 <script>
-  // تخزين الرقم في localStorage
+  // عداد المتبرعين
   let counter = localStorage.getItem('donorCounter');
   if(!counter) counter = 5680;
   const counterDiv = document.getElementById('counter');
@@ -86,7 +102,6 @@
     counter++;
     localStorage.setItem('donorCounter', counter);
 
-    // تأثير الرقم ييجي من فوق
     counterDiv.style.opacity = 0;
     counterDiv.style.transform = 'translateY(-20px)';
     counterDiv.innerHTML = "عدد المتبرعين: " + counter + " شخص";
@@ -94,17 +109,14 @@
     setTimeout(() => {
       counterDiv.style.opacity = 1;
       counterDiv.style.transform = 'translateY(0)';
-      // تغيير لون الرقم بشكل سلس
       const r = Math.floor(Math.random()*200 + 30);
       const g = Math.floor(Math.random()*200 + 30);
       const b = Math.floor(Math.random()*200 + 30);
       counterDiv.style.color = `rgb(${r},${g},${b})`;
     }, 50);
 
-    // كل 3-8 ثواني يزيد تلقائي
     setTimeout(updateCounter, Math.floor(Math.random() * 5000) + 3000);
   }
-
   updateCounter();
 
   // تأثير حركة للعلم
@@ -113,13 +125,35 @@
     flag.style.transform = `rotate(${Math.random()*4 - 2}deg)`;
   }, 2000);
 
-  // تغيير خلفية الصفحة بألوان ناعمة بشكل سلس
+  // تغيير خلفية الصفحة بألوان ناعمة
   setInterval(() => {
     const r = Math.floor(Math.random()*50 + 200);
     const g = Math.floor(Math.random()*50 + 200);
     const b = Math.floor(Math.random()*50 + 200);
     body.style.backgroundColor = `rgb(${r},${g},${b})`;
   }, 4000);
+
+  // رسالة شكر بالصوت عند أول تحميل الصفحة
+  window.addEventListener('load', function() {
+    if(!localStorage.getItem('thankSpoken')) {
+      const thank = document.getElementById('thankMessage');
+      thank.style.display = 'block';
+
+      // استخدام Web Speech API
+      const msg = new SpeechSynthesisUtterance();
+      msg.text = "شكراً لدعمك لأخواتك في فلسطين… شكراً يا مصر";
+      msg.lang = 'ar-SA'; // اللغة العربية
+      msg.rate = 1; // سرعة الكلام
+      msg.pitch = 1; // طبقة الصوت
+      window.speechSynthesis.speak(msg);
+
+      localStorage.setItem('thankSpoken', 'true');
+
+      setTimeout(() => {
+        thank.style.display = 'none';
+      }, 5000); // تظهر 5 ثواني
+    }
+  });
 </script>
 
 </body>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تبرع لفلسطين</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #fdf6e3;
+    text-align: center;
+    padding: 20px;
+  }
+  h1 {
+    color: #d32f2f;
+  }
+  .flag {
+    width: 200px;
+    margin: 20px auto;
+    display: block;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+  .btn {
+    display: block;
+    margin: 15px auto;
+    padding: 15px 25px;
+    font-size: 18px;
+    text-decoration: none;
+    color: white;
+    background-color: #4caf50;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 400px;
+  }
+  .btn:hover {
+    background-color: #388e3c;
+  }
+  #counter {
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #333;
+  }
+</style>
+</head>
+<body>
+
+<h1>تبرع لدعم فلسطين</h1>
+
+<!-- عداد المتبرعين -->
+<div id="counter">عدد المتبرعين: 5680 شخص</div>
+
+<img src="images.jpeg" alt="علم فلسطين" class="flag">
+
+<p>اضغط على أي طريقة للتبرع:</p>
+
+<a class="btn" href="sms:9770?body=فلسطين">تبرع عبر رسالة قصيرة (SMS)</a>
+<a class="btn" href="tel:*9*166#">تبرع عبر فودافون كاش – الهلال الأحمر المصري</a>
+<a class="btn" href="tel:99981">التبرع عبر فوري</a>
+
+<script>
+  // تخزين الرقم في localStorage عشان ما يرجعش بعد الريفريش
+  let counter = localStorage.getItem('donorCounter');
+  if(!counter) counter = 5680; // الرقم الابتدائي
+  const counterDiv = document.getElementById('counter');
+
+  function updateCounter() {
+    counter++;
+    localStorage.setItem('donorCounter', counter);
+
+    // تأثير الرقم ييجي من فوق
+    counterDiv.style.opacity = 0;
+    counterDiv.style.transform = 'translateY(-20px)';
+    counterDiv.innerHTML = "عدد المتبرعين: " + counter + " شخص";
+    
+    setTimeout(() => {
+      counterDiv.style.transition = 'all 0.5s ease';
+      counterDiv.style.opacity = 1;
+      counterDiv.style.transform = 'translateY(0)';
+    }, 50);
+
+    // كل شويه (مثلاً كل 5 ثواني) يزيد تلقائي
+    setTimeout(updateCounter, Math.floor(Math.random() * 5000) + 3000);
+  }
+
+  updateCounter();
+</script>
+
+</body>
+</html>

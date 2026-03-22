@@ -7,19 +7,21 @@
 <style>
   body {
     font-family: Arial, sans-serif;
-    background-color: #fdf6e3;
+    background-color: #ffffff; /* صفحة بيضاء */
     text-align: center;
     padding: 20px;
+    transition: background 1s ease;
   }
   h1 {
     color: #d32f2f;
   }
   .flag {
-    width: 200px;
+    width: 220px;
     margin: 20px auto;
     display: block;
     border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transition: transform 0.5s ease;
   }
   .btn {
     display: block;
@@ -28,19 +30,22 @@
     font-size: 18px;
     text-decoration: none;
     color: white;
-    background-color: #4caf50;
     border-radius: 10px;
     width: 80%;
     max-width: 400px;
+    background: linear-gradient(45deg, #4caf50, #81c784);
+    transition: background 1s ease, transform 0.3s ease;
   }
   .btn:hover {
-    background-color: #388e3c;
+    transform: scale(1.05);
+    background: linear-gradient(45deg, #388e3c, #66bb6a);
   }
   #counter {
-    font-size: 24px;
+    font-size: 26px;
     margin-bottom: 20px;
     font-weight: bold;
     color: #333;
+    transition: all 0.5s ease, color 1s ease;
   }
 </style>
 </head>
@@ -48,22 +53,34 @@
 
 <h1>تبرع لدعم فلسطين</h1>
 
+<img src="images.jpeg" alt="علم فلسطين" class="flag">
+
 <!-- عداد المتبرعين -->
 <div id="counter">عدد المتبرعين: 5680 شخص</div>
 
-<img src="images.jpeg" alt="علم فلسطين" class="flag">
+<p>اختر طريقة التبرع:</p>
 
-<p>اضغط على أي طريقة للتبرع:</p>
-
+<!-- زر رسالة قصيرة SMS -->
 <a class="btn" href="sms:9770?body=فلسطين">تبرع عبر رسالة قصيرة (SMS)</a>
+
+<!-- زر فودافون كاش -->
 <a class="btn" href="tel:*9*166#">تبرع عبر فودافون كاش – الهلال الأحمر المصري</a>
+
+<!-- زر فوري -->
 <a class="btn" href="tel:99981">التبرع عبر فوري</a>
 
+<!-- زر الحسابات البنكية -->
+<a class="btn" href="tel:838450130">الهلال الأحمر المصري – بنك القاهرة</a>
+<a class="btn" href="tel:100035211157">CIB: الحساب للتبرع</a>
+<a class="btn" href="tel:70237939100010">Arab African International Bank</a>
+<a class="btn" href="tel:2820302932110010">SAIB فرع المعادي</a>
+
 <script>
-  // تخزين الرقم في localStorage عشان ما يرجعش بعد الريفريش
+  // تخزين الرقم في localStorage
   let counter = localStorage.getItem('donorCounter');
-  if(!counter) counter = 5680; // الرقم الابتدائي
+  if(!counter) counter = 5680;
   const counterDiv = document.getElementById('counter');
+  const body = document.body;
 
   function updateCounter() {
     counter++;
@@ -73,18 +90,36 @@
     counterDiv.style.opacity = 0;
     counterDiv.style.transform = 'translateY(-20px)';
     counterDiv.innerHTML = "عدد المتبرعين: " + counter + " شخص";
-    
+
     setTimeout(() => {
-      counterDiv.style.transition = 'all 0.5s ease';
       counterDiv.style.opacity = 1;
       counterDiv.style.transform = 'translateY(0)';
+      // تغيير لون الرقم بشكل سلس
+      const r = Math.floor(Math.random()*200 + 30);
+      const g = Math.floor(Math.random()*200 + 30);
+      const b = Math.floor(Math.random()*200 + 30);
+      counterDiv.style.color = `rgb(${r},${g},${b})`;
     }, 50);
 
-    // كل شويه (مثلاً كل 5 ثواني) يزيد تلقائي
+    // كل 3-8 ثواني يزيد تلقائي
     setTimeout(updateCounter, Math.floor(Math.random() * 5000) + 3000);
   }
 
   updateCounter();
+
+  // تأثير حركة للعلم
+  const flag = document.querySelector('.flag');
+  setInterval(() => {
+    flag.style.transform = `rotate(${Math.random()*4 - 2}deg)`;
+  }, 2000);
+
+  // تغيير خلفية الصفحة بألوان ناعمة بشكل سلس
+  setInterval(() => {
+    const r = Math.floor(Math.random()*50 + 200);
+    const g = Math.floor(Math.random()*50 + 200);
+    const b = Math.floor(Math.random()*50 + 200);
+    body.style.backgroundColor = `rgb(${r},${g},${b})`;
+  }, 4000);
 </script>
 
 </body>

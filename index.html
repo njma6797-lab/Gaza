@@ -13,6 +13,9 @@
     text-align: center;
     padding: 20px;
     transition: background 1s ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
   }
 
   h1 {
@@ -28,19 +31,6 @@
     border-radius: 15px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.4);
     transition: transform 0.5s ease;
-  }
-
-  #poem {
-    font-size: 22px;
-    font-weight: bold;
-    margin: 20px auto;
-    max-width: 800px;
-    line-height: 1.6;
-    background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff);
-    -webkit-background-clip: text;
-    color: transparent;
-    text-shadow: 3px 3px 10px rgba(0,0,0,0.5);
-    perspective: 1000px;
   }
 
   #counter {
@@ -87,18 +77,25 @@
     margin: 20px auto;
     font-weight: bold;
   }
+
+  /* الشعر في الأسفل */
+  #poem {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: auto;
+    line-height: 1.6;
+    background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff);
+    -webkit-background-clip: text;
+    color: transparent;
+    text-shadow: 3px 3px 12px rgba(0,0,0,0.5);
+    perspective: 1000px;
+    padding: 20px 0;
+  }
 </style>
 </head>
 <body>
 
 <h1>تبرع لدعم فلسطين</h1>
-
-<div id="poem">
-فلسطين يا أرض النخيل والورد والهوى<br>
-مصر يا قلب العرب والكرامة والندى<br>
-يد واحدة تمتد للحب والسلام<br>
-والأمل فينا ما يموت مهما طال الظلام
-</div>
 
 <img src="images.jpeg" alt="علم فلسطين" class="flag">
 
@@ -118,6 +115,14 @@
 <a class="btn" href="tel:2820302932110010">SAIB فرع المعادي</a>
 
 <div id="thankMessage">شكراً لدعمك لأخواتك في فلسطين… شكراً يا مصر ❤️</div>
+
+<!-- الشعر الجديد -->
+<div id="poem">
+فلسطين تنادي بالحرية والندى<br>
+مصر سندها وعز العرب والصفاء<br>
+قلوبنا واحدة، يدنا تمتد بالأمل<br>
+نحمي الأرض ونزرع السلام والضياء
+</div>
 
 <script>
   // عداد المتبرعين بأسلوب ورقي/رقم سباق
@@ -152,13 +157,13 @@
   }
   updateCounter();
 
-  // تأثير حركة للعلم
+  // حركة العلم
   const flag = document.querySelector('.flag');
   setInterval(() => {
     flag.style.transform = `rotate(${Math.random()*4 - 2}deg)`;
   }, 2000);
 
-  // تغيير خلفية الصفحة بألوان قوية 4K
+  // تغيير خلفية قوية
   setInterval(() => {
     const r = Math.floor(Math.random()*50 + 200);
     const g = Math.floor(Math.random()*50 + 200);
@@ -166,7 +171,7 @@
     body.style.backgroundColor = `rgb(${r},${g},${b})`;
   }, 4000);
 
-  // رسالة صوتية عند أول زيارة
+  // صوت شكر جوجل
   window.addEventListener('load', function() {
     if(!localStorage.getItem('thankSpoken')){
       const thank = document.getElementById('thankMessage');

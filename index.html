@@ -11,12 +11,12 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'SF Pro Display', Arial, sans-serif;
-  color: white;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(135deg,#0b0c10,#660000);
-  overflow-x: hidden;
+  background: linear-gradient(135deg,#0b0c10,#330000);
+  color: white;
 }
 
 canvas { position: fixed; top:0; left:0; z-index:0; }
@@ -33,7 +33,7 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
 #username {
   font-size: 36px;
   font-weight: bold;
-  color: #ff0000;
+  color: #FF8C00; /* برتقالي داكن متناسق مع الأحمر */
   text-shadow: 2px 2px 12px rgba(0,0,0,0.8);
   display: flex;
   align-items: center;
@@ -57,21 +57,21 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
 }
 
 #addFan {
-  background: linear-gradient(45deg,#8B0000,#FF4500);
-  color: white;
+  background: linear-gradient(45deg,#8B0000,#FF6347); /* ألوان دمويّة */
+  color: #FFD700; /* ذهبي متناسق */
   border: none;
   border-radius: 50%;
   width: 40px;
   height: 40px;
   font-size: 22px;
   cursor: pointer;
-  box-shadow: 0 0 15px #ff0000;
+  box-shadow: 0 0 15px #FF4500;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 #addFan:hover {
   transform: scale(1.2);
-  box-shadow: 0 0 25px #ff0000;
+  box-shadow: 0 0 25px #FF6347;
 }
 
 #counter {
@@ -88,7 +88,7 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
 .counter-number {
   font-size: 28px;
   font-weight: bold;
-  background: linear-gradient(45deg,#FF0000,#8B0000);
+  background: linear-gradient(45deg,#FF6347,#FFD700,#8B0000);
   -webkit-background-clip: text;
   color: transparent;
   text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
@@ -101,7 +101,7 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
   font-size: 18px;
   font-weight: bold;
   margin: 15px auto;
-  color: #ff4500;
+  color: #FF4500;
   display: none;
   text-align: center;
   padding: 10px 20px;
@@ -116,7 +116,7 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
   padding: 12px 20px;
   font-size: 16px;
   text-decoration: none;
-  color: white;
+  color: #FFD700;
   border-radius: 10px;
   width: 85%;
   max-width: 350px;
@@ -129,7 +129,7 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
 
 .btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 20px #ff0000;
+  box-shadow: 0 0 20px #FF4500;
 }
 
 #poem {
@@ -137,7 +137,7 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
   font-weight: bold;
   margin-top: 40px;
   line-height: 1.5;
-  background: linear-gradient(45deg,#FF0000,#8B0000,#FF6347);
+  background: linear-gradient(45deg,#FF6347,#FFD700,#8B0000);
   -webkit-background-clip: text;
   color: transparent;
   text-align: center;
@@ -147,7 +147,7 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
 </head>
 <body>
 
-<canvas id="stars"></canvas>
+<canvas id="bloodCanvas"></canvas>
 
 <div id="header">
   <div id="username">
@@ -238,32 +238,42 @@ addFanBtn.addEventListener('click', ()=>{
 
 updateFans();
 
-// خلفية النجوم
-const canvas=document.getElementById('stars');
+// دم متساقط على الأرض
+const canvas=document.getElementById('bloodCanvas');
 const ctx=canvas.getContext('2d');
 canvas.width=window.innerWidth;
 canvas.height=window.innerHeight;
-const stars=[];
-for(let i=0;i<200;i++){
-  stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,radius:Math.random()*1.5+0.5,vx:Math.random()*0.05-0.025,vy:Math.random()*0.05-0.025});
+const drops=[];
+
+function createDrop(){
+  const x=Math.random()*canvas.width;
+  const y=-10;
+  const radius=Math.random()*3+2;
+  const speed=Math.random()*2+1;
+  drops.push({x,y,radius,speed});
 }
-function drawStars(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  for(let s of stars){
+
+function drawDrops(){
+  ctx.fillStyle='rgba(0,0,0,0.2)';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  for(let i=drops.length-1;i>=0;i--){
+    const d=drops[i];
+    d.y+=d.speed;
     ctx.beginPath();
-    ctx.arc(s.x,s.y,s.radius,0,Math.PI*2);
-    ctx.fillStyle='white';
+    ctx.arc(d.x,d.y,d.radius,0,Math.PI*2);
+    ctx.fillStyle='rgba(139,0,0,0.8)';
     ctx.fill();
-    s.x+=s.vx;
-    s.y+=s.vy;
-    if(s.x<0)s.x=canvas.width;
-    if(s.x>canvas.width)s.x=0;
-    if(s.y<0)s.y=canvas.height;
-    if(s.y>canvas.height)s.y=0;
+    if(d.y>canvas.height){
+      drops.splice(i,1);
+    }
   }
-  requestAnimationFrame(drawStars);
+  requestAnimationFrame(drawDrops);
 }
-drawStars();
+
+setInterval(createDrop,50);
+drawDrops();
+
 window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
 </script>
 

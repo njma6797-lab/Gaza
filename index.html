@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#080b12"><meta name="description" content="NEGM CODE LAB — استوديو البرمجة والنشر من الموبايل">
+  <title>NEGM CODE LAB</title><link rel="icon" href="assets/logo.png"><link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar"><a class="brand" href="#home"><img src="assets/logo.png" alt="NEGM" onerror="this.style.display='none'"><span><b>NEGM</b><small>CODE LAB</small></span></a><div class="top-actions"><span id="authState" class="status-dot">غير متصل</span><button id="loginBtn" class="btn btn-primary">ربط الحساب</button><button id="logoutBtn" class="btn btn-quiet hidden">خروج</button></div></header>
+  <main>
+    <section id="homeView" class="view active">
+      <div class="hero"><div class="eyebrow"><span class="pulse"></span> استوديو التطوير الخاص بك</div><h1>حوّل فكرتك إلى <em>مشروع حقيقي.</em></h1><p>اكتب الكود، أضف ملفاتك وصورك، احفظها في مستودعك على GitHub، وانشر مواقعك الثابتة.</p><div class="hero-actions"><button class="btn btn-primary" id="startBtn">ابدأ مشروعًا <span>↙</span></button><button class="btn btn-outline" id="connectRepoBtn">اختيار مستودع</button></div><div class="hero-stats"><div><b>01</b><span>اكتب الكود</span></div><div><b>02</b><span>احفظ على GitHub</span></div><div><b>03</b><span>انشر مشروعك</span></div></div></div>
+      <div class="section-head"><div><span class="eyebrow">WORKSPACE</span><h2>مساحة العمل</h2></div><button id="refreshReposBtn" class="btn btn-quiet">تحديث المستودعات ↻</button></div>
+      <div class="workspace-grid"><article class="panel repo-panel"><div class="panel-title"><div class="icon-box">⌘</div><div><h3>مستودعات GitHub</h3><p>اختر مستودعًا لتعديل ملفاته</p></div></div><select id="repoSelect" aria-label="اختيار المستودع"><option value="">اربط حساب GitHub أولًا</option></select><div class="inline-actions"><button id="loadRepoBtn" class="btn btn-primary">فتح المستودع</button><button id="newRepoBtn" class="btn btn-outline">+ مستودع جديد</button></div><div id="repoInfo" class="muted-note">لم يتم اختيار مستودع بعد.</div></article>
+      <article class="panel quick-panel"><div class="panel-title"><div class="icon-box purple">✦</div><div><h3>مساعد البرمجة</h3><p>أفكار وقوالب جاهزة داخل ملف JSON</p></div></div><select id="templateSelect" aria-label="قالب جاهز"><option value="">اختر قالبًا جاهزًا</option></select><button id="insertTemplateBtn" class="btn btn-outline full">استخدام القالب في المحرر</button><button id="openAiBtn" class="text-button">فتح مساعد كتابة الكود ←</button></article></div>
+      <div class="section-head"><div><span class="eyebrow">BUILD / PREVIEW</span><h2>محرر المشروع</h2></div><span id="saveStatus" class="save-status">جاهز</span></div>
+      <section class="panel editor-panel"><div class="editor-toolbar"><div class="toolbar-left"><button id="newFileBtn" class="btn btn-small btn-outline">+ ملف</button><label class="btn btn-small btn-outline upload-label">رفع ملفات<input id="fileUpload" type="file" multiple hidden></label><button id="deleteFileBtn" class="btn btn-small btn-quiet">حذف الملف</button></div><div class="toolbar-right"><button id="previewBtn" class="btn btn-small btn-outline">معاينة</button><button id="saveBtn" class="btn btn-small btn-primary">حفظ في GitHub</button></div></div>
+        <div class="editor-layout"><aside class="file-sidebar"><div class="sidebar-title">ملفات المشروع <span>⌄</span></div><div id="fileTree" class="file-tree"><button class="file-item selected" data-file="index.html">▤ index.html</button></div></aside><div class="code-area"><div class="file-tab"><span id="activeFileName">index.html</span><span class="tab-dot"></span></div><textarea id="codeEditor" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="محرر الكود" placeholder="اكتب الكود هنا..."></textarea><div class="editor-footer"><span id="lineInfo">سطر 1</span><span>UTF-8 · تحرير محلي</span></div></div></div>
+      </section>
+      <section class="panel preview-panel" id="previewPanel"><div class="panel-title"><div><h3>معاينة HTML</h3><p>المعاينة معزولة عن جلسة المنصة</p></div><button id="closePreviewBtn" class="btn btn-quiet">إخفاء</button></div><iframe id="previewFrame" sandbox="allow-forms allow-modals allow-scripts" title="معاينة المشروع"></iframe></section>
+      <section class="panel ai-panel" id="aiPanel"><div class="panel-title"><div class="icon-box purple">✦</div><div><h3>مساعد كتابة الكود</h3><p>اربط نقطة API آمنة من إعداداتك؛ لا تضع مفتاح API هنا في المتصفح.</p></div></div><label class="field-label" for="aiEndpoint">عنوان وسيط الذكاء الاصطناعي (اختياري)</label><input id="aiEndpoint" class="text-input" placeholder="https://your-secure-proxy.example/api/chat"><label class="field-label" for="aiPrompt">عايز تعمل إيه؟</label><textarea id="aiPrompt" class="prompt-input" placeholder="مثال: أنشئ صفحة هبوط عربية متجاوبة لمتجر ملابس..."></textarea><div class="inline-actions"><button id="askAiBtn" class="btn btn-primary">توليد اقتراح</button><button id="hideAiBtn" class="btn btn-quiet">إخفاء</button></div><pre id="aiOutput" class="ai-output">المساعد جاهز. يمكنك أيضًا اختيار وصفة جاهزة من ملف data.json.</pre></section>
+    </section>
+  </main>
+  <footer><span>NEGM CODE LAB</span><span>صُنع للمبدعين <b>✦</b></span></footer>
+  <div id="toast" role="status" class="toast"></div>
+</div>
+<script src="firebase-config.js"></script><script src="github.js"></script><script src="editor.js"></script><script src="preview.js"></script><script src="ai.js"></script><script src="app.js"></script>
+</body></html>

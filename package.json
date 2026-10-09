@@ -1,0 +1,8 @@
+{
+  "name": "negm-code-lab",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NEGM CODE LAB static GitHub Pages app",
+  "scripts": {"check": "node --check app.js && node --check github.js && node --check editor.js && node --check preview.js && node --check ai.js"},
+  "devDependencies": {}
+}
